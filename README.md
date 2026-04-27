@@ -72,3 +72,14 @@ Frontend (3 Apps) → Backend API → Database + Cache
 
 ```bash
 GET /api/v1/search?q=man
+
+{
+  "success": true,
+  "data": [
+    {
+      "value": 123,
+      "label": "Manibeli",
+      "fullAddress": "Manibeli, Nandurbar, Maharashtra, India"
+    }
+  ]
+}
