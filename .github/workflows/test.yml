@@ -15,7 +15,7 @@ jobs:
         image: postgres:14
         env:
           POSTGRES_USER: bluestock
-          POSTGRES_PASSWORD: bluestock_password
+          POSTGRES_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
           POSTGRES_DB: bluestock_test
         options: >-
           --health-cmd pg_isready
@@ -55,14 +55,14 @@ jobs:
         cd bluestock_api/backend
         npx prisma db push --skip-generate
       env:
-        DATABASE_URL: postgresql://bluestock:bluestock_password@localhost:5432/bluestock_test
+        DATABASE_URL: postgresql://bluestock:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/bluestock_test
     
     - name: Run Tests
       run: |
         cd bluestock_api/backend
         npm test -- --coverage
       env:
-        DATABASE_URL: postgresql://bluestock:bluestock_password@localhost:5432/bluestock_test
+        DATABASE_URL: postgresql://bluestock:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/bluestock_test
         UPSTASH_REDIS_REST_URL: http://localhost:6379
         JWT_SECRET: test_secret_key_min_32_characters_long
         NODE_ENV: test

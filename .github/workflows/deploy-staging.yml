@@ -14,7 +14,7 @@ jobs:
         image: postgres:14
         env:
           POSTGRES_USER: bluestock
-          POSTGRES_PASSWORD: bluestock_password
+          POSTGRES_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
           POSTGRES_DB: bluestock_staging
         options: >-
           --health-cmd pg_isready
@@ -43,14 +43,14 @@ jobs:
         cd bluestock_api/backend
         npx prisma db push --skip-generate
       env:
-        DATABASE_URL: postgresql://bluestock:bluestock_password@localhost:5432/bluestock_staging
+        DATABASE_URL: postgresql://bluestock:${{ secrets.STAGING_DB_PASSWORD }}@localhost:5432/bluestock_staging
     
     - name: Run Backend Tests
       run: |
         cd bluestock_api/backend
         npm test
       env:
-        DATABASE_URL: postgresql://bluestock:bluestock_password@localhost:5432/bluestock_staging
+        DATABASE_URL: postgresql://bluestock:${{ secrets.STAGING_DB_PASSWORD }}@localhost:5432/bluestock_staging
         NODE_ENV: test
     
     - name: Build Frontend Apps
