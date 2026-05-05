@@ -1,85 +1,50 @@
-# DataNexus-API-System
-A production-ready B2B SaaS platform providing structured access to 600,000+ Indian villages with intelligent search, hierarchical mapping, and API-based integration.
+﻿# DataNexus-API-System
 
-## 🌐 Live Applications
+A modular B2B platform for Indian village geolocation data. This repository contains project-level documentation and links to the individual component repositories.
 
-🔹 Demo App (Public Form)  
-👉 https://your-demo-url.vercel.app  
+## Repository Overview
 
-🔹 Admin Dashboard  
-👉 https://your-admin-url.vercel.app  
+- **Main system repo:** https://github.com/shipra9505/DataNexus-API-System
+- **Backend API repo:** https://github.com/shipra9505/DataNexus-API-backend
+- **Admin dashboard repo:** https://github.com/shipra9505/DataNexus-API-Admin-Dashboard
+- **B2B portal repo:** https://github.com/shipra9505/DataNexus-API-B2B-Portal
+- **Demo app repo:** https://github.com/shipra9505/DataNexus-API-Demo-App
 
-🔹 B2B Client Portal  
-👉 https://your-b2b-url.vercel.app  
+## Purpose
 
-🔹 Backend API  
-👉 https://your-backend-url.vercel.app/api/v1  
+This repository is the central documentation and architecture hub for the DataNexus API platform.
+It stores system-wide guides, architecture documentation, release coordination details, and repository links.
 
----
+## Included Documentation
 
-## 🧠 System Architecture
+- `docs/SETUP.md` — local development and environment setup
+- `docs/ARCHITECTURE.md` — system architecture and data flow
+- `docs/CONTRIBUTING.md` — contribution guidelines and git workflow
+- `docs/TESTING.md` — testing strategy and CI/CD guidance
+- `docs/DEPLOYMENT.md` — deployment process and staging/production instructions
 
-Frontend (3 Apps) → Backend API → Database + Cache
+## How to Use
 
----
-
-## 📦 Repositories
-
-- 🔧 Backend API  
-  https://github.com/shipra9505/DataNexus-API-backend  
-
-- 🎛️ Admin Dashboard  
-  https://github.com/shipra9505/DataNexus-API-Admin-Dashboard
-
-- 🏢 B2B Portal  
-  https://github.com/shipra9505/DataNexus-API-B2B-Portal
-
-- 🧪 Demo App  
-  https://github.com/shipra9505/DataNexus-API-Demo-App  
-
----
-
-## ⚙️ Tech Stack
-
-### Backend
-- Node.js + Express.js  
-- Prisma ORM  
-- PostgreSQL (NeonDB)  
-- Redis (Upstash)  
-
-### Frontend
-- React (Vite)  
-- Tailwind CSS  
-
-### DevOps & Deployment
-- Vercel  
-- GitHub  
-
----
-
-## 🔐 Features
-
-- 🔍 Smart village search & autocomplete  
-- 📍 Hierarchical location mapping (Village → State)  
-- ⚡ Redis caching for performance  
-- 🔑 API key-based authentication  
-- 📊 Admin analytics dashboard  
-- 🧾 Structured API responses (SaaS-ready)
-
----
-
-## 📈 API Example
+1. Clone this repository:
 
 ```bash
-GET /api/v1/search?q=man
+git clone https://github.com/shipra9505/DataNexus-API-System.git
+cd DataNexus-API-System
+```
 
-{
-  "success": true,
-  "data": [
-    {
-      "value": 123,
-      "label": "Manibeli",
-      "fullAddress": "Manibeli, Nandurbar, Maharashtra, India"
-    }
-  ]
-}
+2. Open the `docs/` folder and review the setup, architecture, testing, and deployment guides.
+3. Visit the individual component repositories for the code and app-specific implementation.
+
+## Notes on Structure
+
+- The main repository is for cross-project documentation and architecture.
+- Each component repository holds implementation for that app or service.
+- Upload the Markdown files in `docs/` to the main repository only.
+- Keep application code and component-specific README files in the individual repos.
+
+## Component Paths
+
+- Backend source: `bluestock_api/backend`
+- Admin app code: `admin-dashboard`
+- B2B portal code: `b2b-portal`
+- Demo app code: `demo-app`

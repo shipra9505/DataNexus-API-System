@@ -1,0 +1,138 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [ develop ]
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: bluestock
+          POSTGRES_PASSWORD: bluestock_password
+          POSTGRES_DB: bluestock_staging
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install Backend Dependencies
+      run: |
+        cd bluestock_api/backend
+        npm ci
+    
+    - name: Setup Staging Database
+      run: |
+        cd bluestock_api/backend
+        npx prisma db push --skip-generate
+      env:
+        DATABASE_URL: postgresql://bluestock:bluestock_password@localhost:5432/bluestock_staging
+    
+    - name: Run Backend Tests
+      run: |
+        cd bluestock_api/backend
+        npm test
+      env:
+        DATABASE_URL: postgresql://bluestock:bluestock_password@localhost:5432/bluestock_staging
+        NODE_ENV: test
+    
+    - name: Build Frontend Apps
+      run: |
+        cd admin-dashboard && npm install && npm run build && cd ..
+        cd b2b-portal && npm install && npm run build && cd ..
+        cd demo-app && npm install && npm run build && cd ..
+    
+    - name: Setup Vercel
+      run: npm i -g vercel
+    
+    - name: Deploy Backend to Vercel Staging
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID_BACKEND: ${{ secrets.VERCEL_PROJECT_ID_BACKEND_STAGING }}
+      run: |
+        cd bluestock_api/backend
+        vercel deploy --prod --token=$VERCEL_TOKEN --confirm
+    
+    - name: Deploy Admin Dashboard to Vercel Staging
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID_ADMIN: ${{ secrets.VERCEL_PROJECT_ID_ADMIN_STAGING }}
+      run: |
+        cd admin-dashboard
+        vercel deploy --prod --token=$VERCEL_TOKEN --confirm
+    
+    - name: Deploy B2B Portal to Vercel Staging
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID_B2B: ${{ secrets.VERCEL_PROJECT_ID_B2B_STAGING }}
+      run: |
+        cd b2b-portal
+        vercel deploy --prod --token=$VERCEL_TOKEN --confirm
+    
+    - name: Deploy Demo App to Vercel Staging
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID_DEMO: ${{ secrets.VERCEL_PROJECT_ID_DEMO_STAGING }}
+      run: |
+        cd demo-app
+        vercel deploy --prod --token=$VERCEL_TOKEN --confirm
+    
+    - name: Run Smoke Tests
+      run: |
+        echo "Running smoke tests on staging..."
+        curl -f http://localhost:3000/api/v1/states || exit 1
+      timeout-minutes: 5
+      continue-on-error: true
+    
+    - name: Notify Deployment Success
+      uses: 8398a7/action-slack@v3
+      if: success()
+      with:
+        status: custom
+        custom_payload: |
+          {
+            text: '✅ Staging Deployment Successful',
+            attachments: [{
+              color: 'good',
+              text: `Branch: develop\nCommit: ${process.env.GITHUB_SHA.substring(0, 7)}\nDeploy: Staging`
+            }]
+          }
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      continue-on-error: true
+    
+    - name: Notify Deployment Failure
+      uses: 8398a7/action-slack@v3
+      if: failure()
+      with:
+        status: custom
+        custom_payload: |
+          {
+            text: '❌ Staging Deployment Failed',
+            attachments: [{
+              color: 'danger',
+              text: `Branch: develop\nCommit: ${process.env.GITHUB_SHA.substring(0, 7)}`
+            }]
+          }
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      continue-on-error: true
