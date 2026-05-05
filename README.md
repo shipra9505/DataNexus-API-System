@@ -44,30 +44,42 @@ cd DataNexus-API-System
 
 ## Component Paths
 
-<<<<<<< HEAD
 - Backend source: `bluestock_api/backend`
 - Admin app code: `admin-dashboard`
 - B2B portal code: `b2b-portal`
 - Demo app code: `demo-app`
-=======
-# Terminal 4: Demo App (port 5175)
+
+---
+
+## 🔗 Local Development
+
+### Quick Start
+
+Terminal 1 - Backend API (port 3000):
+```bash
+cd bluestock_api/backend
+npm install && npm run dev
+```
+
+Terminal 2 - Admin Dashboard (port 5174):
+```bash
+cd admin-dashboard
+npm install && npm run dev
+```
+
+Terminal 3 - B2B Portal (port 5173):
+```bash
+cd b2b-portal
+npm install && npm run dev
+```
+
+Terminal 4 - Demo App (port 5175):
+```bash
 cd demo-app
 npm install && npm run dev
 ```
 
-## 🔗 Repository Structure
-
-The project is organized into separate component repositories for clean modular delivery:
-
-- **Main system repository:** https://github.com/shipra9505/DataNexus-API-System
-- **Backend repository:** https://github.com/shipra9505/DataNexus-API-backend
-- **Admin dashboard repository:** https://github.com/shipra9505/DataNexus-API-Admin-Dashboard
-- **B2B portal repository:** https://github.com/shipra9505/DataNexus-API-B2B-Portal
-- **Demo app repository:** https://github.com/shipra9505/DataNexus-API-Demo-App
-
-The `docs/` folder in the main repo contains overall architecture, setup, testing, and deployment guides.
-
-### 4️⃣ Access Applications
+### Access Applications
 
 - **API Documentation**: [http://localhost:3000/api-docs](http://localhost:3000/api-docs) (Swagger)
 - **Admin Dashboard**: [http://localhost:5174](http://localhost:5174)
@@ -78,26 +90,16 @@ The `docs/` folder in the main repo contains overall architecture, setup, testin
 
 ## 📚 Documentation
 
-### For Users
-- 📖 [Setup Guide](docs/SETUP.md) - Local development setup
-- 🏗️ [Architecture](docs/ARCHITECTURE.md) - System design & flows
-- 📊 [API Reference](docs/API_ENDPOINTS_REFERENCE.md) - All endpoints (auto-generated)
-- 🎯 [Feature Checklist](docs/FEATURE_CHECKLIST.md) - What's implemented vs. missing
+### For Setup & Architecture
+- 📖 [Setup Guide](docs/SETUP.md) - Local development and environment setup
+- 🏗️ [Architecture](docs/ARCHITECTURE.md) - System design, data flow, and database schema
 
 ### For Developers
-- 🔧 [Contributing Guide](docs/CONTRIBUTING.md) - Code standards, Git workflow
-- 🧪 [Testing Guide](docs/TESTING.md) - How to write & run tests (TODO)
-- 📝 [Project Evaluation](docs/PROJECT_EVALUATION.md) - Detailed feature analysis
-- 📋 [Visual Summary](docs/VISUAL_SUMMARY.md) - High-level overview with diagrams
+- 🔧 [Contributing Guide](docs/CONTRIBUTING.md) - Code standards and git workflow
+- 🧪 [Testing Guide](docs/TESTING.md) - Testing strategy and procedures
 
-### For DevOps
-- 🚀 [Deployment Guide](docs/DEPLOYMENT.md) - Production deployment (TODO)
-- 🔐 [Security Policy](docs/SECURITY.md) - Security practices (TODO)
-- 📊 [Monitoring](docs/MONITORING.md) - Error tracking & logs (TODO)
-
----
-
-## 🏛️ Project Structure
+### For DevOps & Deployment
+- 🚀 [Deployment Guide](docs/DEPLOYMENT.md) - Production deployment on Vercel and staging setup
 
 ```
 bluestock/
